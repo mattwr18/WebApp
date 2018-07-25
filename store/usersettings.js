@@ -1,5 +1,18 @@
 import { isArray } from 'lodash'
 
+export const state = () => {
+  return {
+    usersettings: {
+      blacklist: []
+    }
+  }
+}
+
+export const getters = {
+  usersettings(state) {
+    return state.usersettings;
+  }
+}
 export const actions = {
   async patch ({dispatch, rootGetters}, data) {
     const user = rootGetters['auth/user']
@@ -18,5 +31,11 @@ export const actions = {
     await dispatch('auth/refreshUser', res, { root: true })
 
     return res
+  },
+  blacklist({blacklist}){
+    console.log(blacklist);
+  },
+  unblacklist({blacklist}){
+    console.log(blacklist);
   }
 }
