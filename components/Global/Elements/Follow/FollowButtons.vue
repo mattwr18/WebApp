@@ -40,6 +40,15 @@
         </hc-button>
       </div>
     </div>
+    <div class="columns is-mobile field has-text-centered">
+      <div class="column control has-text-centered">
+        <hc-button color="button">
+          <template>
+            <hc-icon icon="ban" class="icon-left" /> {{ $t('component.follow.buttonLabelBlacklistAuthor') }}
+          </template>
+            </hc-button>
+      </div>
+    </div>
   </div>
 </template>
 

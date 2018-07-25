@@ -1,5 +1,5 @@
 <template>
-  <div class="contribution-menu" v-if="isModerator">
+  <div class="contribution-menu">
     <b-dropdown class="is-top-center">
       <a slot="trigger">
         <hc-tooltip :label="$t('component.contribution.editSettings')" type="is-dark">
@@ -12,6 +12,11 @@
         </template>
         <template v-else>
           <hc-icon icon="eye"></hc-icon> {{ $t('component.contribution.actionEnable') }}
+        </template>
+      </b-dropdown-item>
+      <b-dropdown-item>
+        <template>
+          <hc-icon icon="ban"></hc-icon> {{ $t('component.contribution.actionBlacklistAuthor') }}
         </template>
       </b-dropdown-item>
       <!--

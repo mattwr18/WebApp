@@ -55,6 +55,7 @@
         "follow": {
             "buttonLabelFollow": "Folgen",
             "buttonLabelUnFollow": "Folgst",
+            "buttonLabelBlacklistAuthor": "Blockieren",
             "messageFollowSuccess": "Du folgst {name} nun",
             "messageUnFollowSuccess": "Du folgst {name} nicht mehr"
         },
@@ -163,6 +164,7 @@
             "actionReport": "Beitrag melden",
             "actionDisable": "Beitrag deaktivieren",
             "actionEnable": "Beitrag aktivieren",
+            "actionBlacklistAuthor": "Autor blockieren",
             "bestList": "Bestenliste",
             "canDos": "Can Do",
             "canDoAdd": "Can Do starten",
