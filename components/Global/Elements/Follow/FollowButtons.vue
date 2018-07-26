@@ -124,14 +124,11 @@
         })
       },
       async toggleBlacklist() {
-        const blacklist = this.usersettings.blacklist;
-        let newBlacklist;
-        if (blacklist.includes(this.entity._id)) {
-          newBlacklist = blacklist.filter(id => id !== this.entity._id);
-          await this.$store.dispatch('usersettings/unblacklist', { blacklist: newBlacklist });
+        if (this.usersettings.blacklist.includes(this.entity._id)) {
+          await this.$store.dispatch('usersettings/unblacklist', this.entity._id);
           this.$snackbar.open({ message: 'You unblacklisted this account' });
         } else {
-          await this.$store.dispatch('usersettings/blacklist', { blacklist: newBlacklist });
+          await this.$store.dispatch('usersettings/blacklist', this.entity._id);
           this.$snackbar.open({ message: 'You blacklisted this account'});
         }
       }

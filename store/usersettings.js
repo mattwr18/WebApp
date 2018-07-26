@@ -8,6 +8,12 @@ export const state = () => {
   }
 }
 
+export const mutations = {
+  usersettings(state, usersettings) {
+    state.usersettings = usersettings;
+  }
+}
+
 export const getters = {
   usersettings(state) {
     return state.usersettings;
@@ -32,10 +38,17 @@ export const actions = {
 
     return res
   },
-  blacklist({blacklist}){
-    console.log(blacklist);
+  async blacklist({commit, state}, userId){
+    let usersettings = Object.assign({}, state.usersettings)
+    let blacklist = usersettings.blacklist.slice();
+    blacklist.push(userId);
+    usersettings.blacklist = blacklist;
+    commit('usersettings', usersettings);
   },
-  unblacklist({blacklist}){
-    console.log(blacklist);
+  async unblacklist({commit, state}, userId){
+    let usersettings = Object.assign({}, state.usersettings)
+    let blacklist = usersettings.blacklist.filter(id => id !== userId);
+    usersettings.blacklist = blacklist;
+    commit('usersettings', usersettings);
   }
 }
