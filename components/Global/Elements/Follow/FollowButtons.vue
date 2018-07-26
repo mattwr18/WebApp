@@ -88,7 +88,7 @@
     computed: {
       ...mapGetters({
         follow: 'connections/follow',
-        usersettings: 'usersettings/usersettings',
+        usersettings: 'blacklist/usersettings',
         loggedInUser: 'auth/user'
       })
     },
@@ -125,10 +125,10 @@
       },
       async toggleBlacklist() {
         if (this.usersettings.blacklist.includes(this.entity._id)) {
-          await this.$store.dispatch('usersettings/unblacklist', this.entity._id);
+          await this.$store.dispatch('blacklist/unblacklist', this.entity._id);
           this.$snackbar.open({ message: 'You unblacklisted this account' });
         } else {
-          await this.$store.dispatch('usersettings/blacklist', this.entity._id);
+          await this.$store.dispatch('blacklist/blacklist', this.entity._id);
           this.$snackbar.open({ message: 'You blacklisted this account'});
         }
       }
