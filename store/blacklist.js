@@ -23,12 +23,14 @@ export const actions = {
     let blacklist = usersettings.blacklist.slice();
     blacklist.push(userId);
     usersettings.blacklist = blacklist;
+    await this.app.$api.service('usersettings').create(usersettings);
     commit('usersettings', usersettings);
   },
   async unblacklist({commit, state}, userId){
     let usersettings = Object.assign({}, state.usersettings)
     let blacklist = usersettings.blacklist.filter(id => id !== userId);
     usersettings.blacklist = blacklist;
+    await this.app.$api.service('usersettings').create(usersettings);
     commit('usersettings', usersettings);
   }
 }
