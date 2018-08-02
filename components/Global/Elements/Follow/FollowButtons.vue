@@ -42,7 +42,11 @@
     </div>
     <div class="columns is-mobile field has-text-centered">
       <div class="column control has-text-centered">
-        <hc-button color="button" @click="toggleBlacklist">
+        <hc-button color="button"
+                   :class="{'is-primary': !blacklistStatus.isPending}"
+                   :disabled="blacklistStatus.isPending"
+                   :isLoading="blacklistStatus.isPending"
+                   @click="toggleBlacklist">
           <template>
             <hc-icon icon="ban" class="icon-left" /> {{ $t('component.follow.buttonLabelBlacklistAuthor') }}
           </template>
@@ -84,11 +88,14 @@
         foreignId: this.entity._id,
         foreignService: this.service
       })
+      this.$store.dispatch('blacklist/syncBlacklist', {
+        userId: this.loggedInUser._id
+      })
     },
     computed: {
       ...mapGetters({
         follow: 'connections/follow',
-        usersettings: 'blacklist/usersettings',
+        blacklistStatus: 'blacklist/status',
         loggedInUser: 'auth/user'
       })
     },
@@ -124,7 +131,7 @@
         })
       },
       async toggleBlacklist() {
-        if (this.usersettings.blacklist.includes(this.entity._id)) {
+        if (this.blacklistStatus.blacklist.includes(this.entity._id)) {
           await this.$store.dispatch('blacklist/unblacklist', this.entity._id);
           this.$snackbar.open({ message: 'You unblacklisted this account' });
         } else {
