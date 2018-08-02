@@ -1,59 +1,70 @@
 import test from 'ava'
 import { mutations, actions } from '../../store/blacklist.js'
+import { testAction } from '../helpers/testAction';
 const feathers = require('@feathersjs/feathers');
+const { status } = mutations;
 
-
-const { usersettings } = mutations;
-const { blacklist, unblacklist } = actions;
-
-test('usersettings setter', t => {
-  const state = { usersettings: { blacklist: [] } }
-  usersettings(state, { blacklist: [1] } );
-  t.deepEqual(state.usersettings, { blacklist: [1] });
-});
-
-/**
- * SOURCE: https://vuex.vuejs.org/guide/testing.html 
- */
-const testAction = async (action, payload, state, expectedMutations, testrunner) => {
-  let count = 0
-  // mock commit
-  const commit = (type, payload) => {
-    const mutation = expectedMutations[count]
-    try {
-      testrunner.deepEqual(type, mutation.type)
-      if (payload) {
-        testrunner.deepEqual(payload, mutation.payload)
-      }
-    } catch (error) {
-      testrunner.fail(new Error(error))
-    }
-    count++
-    if (count >= expectedMutations.length) {
-      testrunner.pass()
-    }
-  }
-  // call the action with mocked store and arguments
-  await action({ commit, state }, payload)
-  // check if no mutations should have been dispatched
-  if (expectedMutations.length === 0) {
-    testrunner.deepEqual(count, 0)
-    testrunner.pass()
-  }
-}
-
-test('blacklist stores blacklist', async (t) => {
-  t.plan(4); // 3 in testAction + api request;
-  let api = feathers();
+let api;
+test.beforeEach(t => {
+  api = feathers();
   api.use('/usersettings', {
-    async create(data) {
-      t.pass();
+    async create() {
+    },
+    async find(){
+      return [];
     }
   });
+});
+test.afterEach.always(t => {
+  api = null;
+});
 
-  const state = { usersettings: { blacklist: [] } }
-  let actionUnderTest = actions.blacklist.bind({app: {$api: api}});
-  await testAction(actionUnderTest, 42, state, [
-    { type: 'usersettings', payload: { blacklist: [42] } }
+
+test('status setter', t => {
+  const state = { status: { blacklist: [] } }
+  status(state, { blacklist: [1] } );
+  t.deepEqual(state.status, { blacklist: [1] });
+});
+
+test('syncBlacklist() sets isPending', async (t) => {
+  const state = { status: { } }
+  let syncBlacklistAction = actions.syncBlacklist.bind({app: {$api: api}});
+  await testAction(syncBlacklistAction, {userId: 42}, state, [
+    { type: 'status', payload: { isPending: true } },
+    { type: 'status', payload: { isPending: false} }
   ], t)
 });
+
+test('syncBlacklist() updates blacklist', async (t) => {
+  const state = { status: { } }
+  api.use('/usersettings', {
+    async find(data) {
+      return {data: [{blacklist: [1234]}]}
+    }
+  });
+  let syncBlacklistAction = actions.syncBlacklist.bind({app: {$api: api}});
+  await testAction(syncBlacklistAction, {userId: 42}, state, [
+    { type: 'status', payload: { isPending: true } },
+    { type: 'status', payload: { blacklist: [1234], isPending: false} }
+  ], t)
+});
+
+test('blacklist(userId) calls commit("status")', async (t) => {
+  const state = { status: { blacklist: [] } }
+  let blacklistAction = actions.blacklist.bind({app: {$api: api}});
+  await testAction(blacklistAction, 42, state, [
+    { type: 'status', payload: { blacklist: [42] } }
+  ], t)
+});
+
+test('blacklist(userId) sends blacklist to API', async (t) => {
+  api.use('/usersettings', {
+    async create(data) {
+      t.deepEqual(data, { blacklist: [42]});
+    }
+  });
+  const state = { status: { blacklist: [] } }
+  let blacklistAction = actions.blacklist.bind({app: {$api: api}});
+  await blacklistAction({ commit: () => {}, state }, 42);
+});
+
