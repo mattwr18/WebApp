@@ -1,6 +1,7 @@
 import { castArray } from 'lodash'
 
 export default {
+  namespaced: true,
   state: {
     categories: []
   },

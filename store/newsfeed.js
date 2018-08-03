@@ -3,6 +3,7 @@ import _ from 'lodash'
 import { Base64 } from 'js-base64'
 
 export default {
+  namespaced: true,
   state: {
     contributions: [],
     search: null,

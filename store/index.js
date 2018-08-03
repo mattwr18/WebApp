@@ -5,7 +5,7 @@ import Vuex from 'vuex'
 import auth from './auth';
 import categories from './categories';
 import comments from './comments';
-import connection from './connections';
+import connections from './connections';
 import env from './env';
 import layout from './layout';
 import newsfeed from './newsfeed';
@@ -19,7 +19,7 @@ const { service } = feathersVuex(feathersClient, { idField: '_id' })
 
 const createStore = () => {
   return new Vuex.Store({
-    modules: { auth, categories, comments, connection, env, layout, newsfeed, notifications, organizations, search, settings, usersettings },
+    modules: { auth, categories, comments, connections, env, layout, newsfeed, notifications, organizations, search, settings, usersettings },
     actions: {
       async nuxtServerInit ({dispatch}) {
         dispatch('categories/init')
@@ -34,4 +34,3 @@ const createStore = () => {
 }
 
 export default createStore
-

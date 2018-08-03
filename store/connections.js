@@ -1,4 +1,5 @@
 export default {
+  namespaced: true,
   state: {
     follow: {
       _id: null,

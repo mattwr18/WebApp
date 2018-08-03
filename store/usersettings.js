@@ -1,6 +1,7 @@
 import { isArray } from 'lodash'
 
 export default {
+  namespaced: true,
   actions: {
     async patch ({dispatch, rootGetters}, data) {
       const user = rootGetters['auth/user']

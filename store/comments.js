@@ -1,6 +1,7 @@
 import { castArray, debounce } from 'lodash'
 
 export default {
+  namespaced: true,
   state: {
     comments: [],
     isLoading: true,
