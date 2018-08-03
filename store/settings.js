@@ -1,6 +1,7 @@
 import {isArray, intersection} from 'lodash'
 
 export default {
+  namespaced: true,
   state: {
     settings: {
       _id: null,

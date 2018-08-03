@@ -5,6 +5,7 @@ const options = {
 }
 
 export default {
+  namespaced: true,
   state: {
     total: 0,
     unseenTotal: 0,

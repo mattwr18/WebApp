@@ -2,6 +2,7 @@ import { clone } from 'lodash'
 import searchQueryBuilder from './utils/search-query-builder'
 
 export default {
+  namespaced: true,
   state: {
     query: '',
     filter: {

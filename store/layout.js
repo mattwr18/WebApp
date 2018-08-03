@@ -1,4 +1,5 @@
 export default {
+  namespaced: true,
   state: {
     change: 0,
     sidebar: {
