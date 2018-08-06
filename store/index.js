@@ -15,20 +15,35 @@ import search from './search';
 import settings from './settings';
 import usersettings from './usersettings';
 
-const { service } = feathersVuex(feathersClient, { idField: '_id' })
+const { service, auth: feathersVuexAuthentication } = feathersVuex(feathersClient, { idField: '_id' })
 
 const createStore = () => {
   return new Vuex.Store({
     modules: { auth, categories, comments, connections, env, layout, newsfeed, notifications, organizations, search, settings, usersettings },
     actions: {
-      async nuxtServerInit ({dispatch}) {
+      async nuxtServerInit ({dispatch, commit}, {req}) {
         dispatch('categories/init')
         await dispatch('auth/init')
         await dispatch('settings/init')
+        return initAuth({
+          commit,
+          dispatch,
+          req,
+          moduleName: 'auth',
+          cookieName: 'feathers-jwt'
+        })
       }
     },
     plugins: [
-      service('usersettings')
+      service('usersettings', {
+        namespace: 'feathers-vuex-usersettings'
+      }),
+      service('users', {
+        namespace: 'feathers-vuex-users'
+      }),
+      feathersVuexAuthentication({
+        userService: 'users'
+      })
     ]
   });
 }

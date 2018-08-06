@@ -1,13 +1,10 @@
 import feathers from '@feathersjs/feathers'
-import socketio from '@feathersjs/socketio-client'
-import io from 'socket.io-client'
 import authentication from '@feathersjs/authentication-client'
 import urlHelper from '~/helpers/urls'
 import Vue from 'vue'
+import { socket, endpoint, authKey } from '../feathers-client'
 
 export default ({app, store, redirect, router}) => {
-  const authKey = 'feathers-jwt'
-  const endpoint = urlHelper.buildEndpointURL(app.$env.API_HOST, { port: app.$env.API_PORT })
   const storage = {
     getItem: (key) => {
       const res = app.$cookies.get(key)
@@ -33,23 +30,9 @@ export default ({app, store, redirect, router}) => {
     }
   }
 
-  const socket = io(endpoint)
-
-  if (process.server) {
-    setTimeout(() => {
-      // close server connection as content was delivered already after 30 seconds at latest
-      try {
-        socket.close()
-      } catch (err) {
-        app.error(err)
-      }
-    }, 30000)
-  }
 
   let api = feathers()
-    .configure(socketio(socket, {
-      timeout: 20000
-    }))
+    .configure(socket)
     .configure(authentication({
       storage: storage,
       storageKey: authKey,
