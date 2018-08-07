@@ -4,15 +4,6 @@ const path = require('path')
 module.exports = {
   env: {
     // pages which do not require a login
-    publicPages: [
-      'auth-login',
-      'auth-register',
-      'auth-signup',
-      'auth-reset',
-      'auth-reset-token',
-      'pages-slug',
-      'test'
-    ],
     // pages to keep alive
     keepAlivePages: [
       'index'
@@ -120,8 +111,7 @@ module.exports = {
   router: {
     middleware: [
       'maintenance',
-      'check-auth',
-      'authenticated'
+      'auth'
     ],
     linkActiveClass: 'active-link'
   },
