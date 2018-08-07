@@ -30,3 +30,7 @@ npm-debug.log
 
 # ignore cypress videos
 cypress/videos
+
+#ignore coverage reports
+.nyc_output/
+coverage/
