@@ -1,42 +1,9 @@
 import feathers from '@feathersjs/feathers'
 import authentication from '@feathersjs/authentication-client'
-// import urlHelper from '~/helpers/urls'
 import Vue from 'vue'
-import { socket, authKey } from '../feathers-client'
+import api, { authKey } from '../feathers-client'
 
 export default ({app, env, store, redirect, router}) => {
-  const storage = {
-    getItem: (key) => {
-      const res = app.$cookies.get(key)
-      // console.log(`## STORAGE: getItem(${key})`, res)
-      return res
-    },
-    setItem: (key, value, options) => {
-      const res = app.$cookies.set(key, value, options)
-      // console.log(`## STORAGE: setItem(${key}, ${value}, ${options})`, res)
-      return res
-    },
-    removeItem: (key) => {
-      const res = app.$cookies.remove(key)
-      // console.log(`## STORAGE: removeItem(${key})`, res)
-      return res
-    },
-    clear: () => {
-      const res = app.$cookies.removeAll()
-      if (env.NODE_ENV === 'development') {
-        console.log(`## STORAGE: clear()`, res)
-      }
-      return res
-    }
-  }
-
-  let api = feathers()
-    .configure(socket)
-    .configure(authentication({
-      storage: storage,
-      storageKey: authKey,
-      cookie: authKey
-    }))
   api.hooks({
     before: {
       all: [
@@ -55,7 +22,7 @@ export default ({app, env, store, redirect, router}) => {
       if (env.NODE_ENV === 'development') {
         console.log('####################')
         console.error(ctx.error)
-        console.info('JWT TOKEN: ', app.$cookies.get(authKey))
+        // console.info('JWT TOKEN: ', app.$cookies.get(authKey))
         console.info('path', ctx.path)
         console.info('service', ctx.service)
         console.info('method', ctx.method)
@@ -85,7 +52,6 @@ export default ({app, env, store, redirect, router}) => {
       // fix issues where we could not log in
       // when at development
       await api.passport.logout()
-      storage.removeItem(authKey)
     }
     let user = null
     const response = await api.authenticate(options)

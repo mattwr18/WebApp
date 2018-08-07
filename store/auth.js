@@ -1,6 +1,6 @@
 import { isEmpty } from 'lodash'
 
-export default {
+export default  {
   namespaced: true,
   state: {
     user: null,

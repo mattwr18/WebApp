@@ -41,7 +41,18 @@ const createStore = () => {
         namespace: 'feathers-vuex-users'
       }),
       feathersVuexAuthentication({
-        userService: 'users'
+        userService: 'users',
+        state: {
+          publicPages: [
+            'auth-login',
+            'auth-register',
+            'auth-signup',
+            'auth-reset',
+            'auth-reset-token',
+            'pages-slug',
+            'test'
+          ],
+        }
       })
     ]
   })
