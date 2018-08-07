@@ -1,6 +1,6 @@
 import feathers from '@feathersjs/feathers'
 import authentication from '@feathersjs/authentication-client'
-import urlHelper from '~/helpers/urls'
+// import urlHelper from '~/helpers/urls'
 import Vue from 'vue'
 import { socket, authKey } from '../feathers-client'
 
@@ -29,7 +29,6 @@ export default ({app, env, store, redirect, router}) => {
       return res
     }
   }
-
 
   let api = feathers()
     .configure(socket)

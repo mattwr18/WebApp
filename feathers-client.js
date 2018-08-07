@@ -7,8 +7,8 @@ import { CookieStorage } from 'cookie-storage'
 
 const authKey = 'feathers-jwt'
 const endpoint = urlHelper.buildEndpointURL(process.env.API_HOST, { port: process.env.API_PORT })
-let socket;
-if (process.env.ENV === 'production'){
+let socket
+if (process.env.ENV === 'production') {
   socket = socketio(io(endpoint), { timeout: 20000 })
   if (process.server) {
     setTimeout(() => {
@@ -32,5 +32,5 @@ let api = feathers()
     cookie: authKey
   }))
 
-export { socket, endpoint, authKey };
+export { socket, endpoint, authKey }
 export default api

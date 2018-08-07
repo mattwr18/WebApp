@@ -2,17 +2,17 @@ import feathersVuex, { initAuth } from 'feathers-vuex'
 import feathersClient from '../feathers-client'
 import Vuex from 'vuex'
 
-import auth from './auth';
-import categories from './categories';
-import comments from './comments';
-import connections from './connections';
-import layout from './layout';
-import newsfeed from './newsfeed';
-import notifications from './notifications';
-import organizations from './organizations';
-import search from './search';
-import settings from './settings';
-import usersettings from './usersettings';
+import auth from './auth'
+import categories from './categories'
+import comments from './comments'
+import connections from './connections'
+import layout from './layout'
+import newsfeed from './newsfeed'
+import notifications from './notifications'
+import organizations from './organizations'
+import search from './search'
+import settings from './settings'
+import usersettings from './usersettings'
 
 const { service, auth: feathersVuexAuthentication } = feathersVuex(feathersClient, { idField: '_id' })
 
@@ -44,7 +44,7 @@ const createStore = () => {
         userService: 'users'
       })
     ]
-  });
+  })
 }
 
 export default createStore
