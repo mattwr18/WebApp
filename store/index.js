@@ -1,5 +1,5 @@
 import feathersVuex, { initAuth } from 'feathers-vuex'
-import feathersClient from '../feathers-client'
+import createApi from '../feathers-client'
 import Vuex from 'vuex'
 
 import auth from './auth'
@@ -14,9 +14,11 @@ import search from './search'
 import settings from './settings'
 import usersettings from './usersettings'
 
-const { service, auth: feathersVuexAuthentication } = feathersVuex(feathersClient, { idField: '_id' })
 
-const createStore = () => {
+const createStore = (ssrContext) => {
+  const api = createApi(ssrContext || {});
+  const { service, auth: feathersVuexAuthentication } = feathersVuex(api, { idField: '_id' })
+
   return new Vuex.Store({
     modules: { auth, categories, comments, connections, env, layout, newsfeed, notifications, organizations, search, settings, usersettings },
     actions: {

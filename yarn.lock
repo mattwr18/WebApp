@@ -2641,10 +2641,6 @@ cookie-signature@1.0.6:
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/cookie-signature/-/cookie-signature-1.0.6.tgz#e303a882b342cc3ee8ca513a79999734dab3ae2c"
 
-cookie-storage@^3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/cookie-storage/-/cookie-storage-3.1.0.tgz#e522fa5b0b33fa7f4c92d396d32ba9cc67aa8a15"
-
 cookie-universal-nuxt@~2.0.3:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/cookie-universal-nuxt/-/cookie-universal-nuxt-2.0.3.tgz#9499fba81e2cbb6b8b5194c1dbc44cf5e31171d7"
@@ -2654,6 +2650,12 @@ cookie-universal-nuxt@~2.0.3:
 cookie-universal@^2.0.3:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/cookie-universal/-/cookie-universal-2.0.3.tgz#da64b8837030081a6ca106aa536317c8612b8019"
+  dependencies:
+    cookie "^0.3.1"
+
+cookie-universal@^2.0.5:
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/cookie-universal/-/cookie-universal-2.0.5.tgz#42f109b96f9ff7e496e79914aaf77a4978ecab7e"
   dependencies:
     cookie "^0.3.1"
 

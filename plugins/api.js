@@ -1,9 +1,17 @@
 import feathers from '@feathersjs/feathers'
+import feathersVuex from 'feathers-vuex'
 import authentication from '@feathersjs/authentication-client'
 import Vue from 'vue'
-import api, { authKey } from '../feathers-client'
+import Vuex from 'vuex'
+import createApi from '../feathers-client'
 
-export default ({app, env, store, redirect, router}) => {
+export default ({app, store, env, redirect, router, req, res}) => {
+  const api = createApi({req, res});
+  const { service, auth: feathersVuexAuthentication, FeathersVuex } = feathersVuex(api, { idField: '_id' })
+
+  Vue.use(FeathersVuex)
+  Vue.use(Vuex)
+
   api.hooks({
     before: {
       all: [
@@ -68,10 +76,6 @@ export default ({app, env, store, redirect, router}) => {
     api.channel('authenticated').join(connection)
   })
 
-  /**
-   * @deprecated
-   */
-  api.authKey = authKey
 
   // make the api accessible inside vue components
   Vue.use({
