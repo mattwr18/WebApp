@@ -141,7 +141,7 @@
       }
     },
     methods: {
-      init () {
+      async init () {
         this.isActivated = true
         app = this
         app.bricksInstance = new Bricks({

@@ -3,7 +3,8 @@ import socketio from '@feathersjs/socketio-client'
 import io from 'socket.io-client'
 import authentication from '@feathersjs/authentication-client'
 import urlHelper from '~/helpers/urls'
-import { CookieStorage } from 'cookie-storage'
+import Cookie from 'cookie-universal';
+
 
 const authKey = 'feathers-jwt'
 const endpoint = urlHelper.buildEndpointURL(process.env.API_HOST, { port: process.env.API_PORT })
@@ -24,13 +25,44 @@ if (process.env.ENV === 'production') {
   socket = socketio(io(endpoint))
 }
 
-let api = feathers()
-  .configure(socket)
-  .configure(authentication({
-    storage: new CookieStorage(),
-    storageKey: authKey,
-    cookie: authKey
-  }))
 
-export { socket, endpoint, authKey }
-export default api
+
+let createApi = ({req, res}) => {
+  const cookies = Cookie(req, res);
+  const storageMapping = {
+    getItem: (key) => {
+      const res = cookies.get(key)
+      // console.log(`## STORAGE: getItem(${key})`, res)
+      return res
+    },
+    setItem: (key, value, options) => {
+      const res = cookies.set(key, value, options)
+      // console.log(`## STORAGE: setItem(${key}, ${value}, ${options})`, res)
+      return res
+    },
+    removeItem: (key) => {
+      const res = cookies.remove(key)
+      // console.log(`## STORAGE: removeItem(${key})`, res)
+      return res
+    },
+    clear: () => {
+      const res = cookies.removeAll()
+      if (process.env.NODE_ENV === 'development') {
+        console.log(`## STORAGE: clear()`, res)
+      }
+      return res
+    }
+  }
+
+  let api = feathers()
+    .configure(socket)
+    .configure(authentication({
+      storage: storageMapping,
+      storageKey: authKey,
+      cookie: authKey
+    }))
+
+  return api;
+}
+
+export default createApi
