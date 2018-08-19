@@ -27,7 +27,7 @@ if (process.env.ENV === 'production') {
 
 
 
-let createApi = ({req, res}) => {
+let createApiClient = ({req, res}) => {
   const cookies = Cookie(req, res);
   const storageMapping = {
     getItem: (key) => {
@@ -65,4 +65,4 @@ let createApi = ({req, res}) => {
   return api;
 }
 
-export default createApi
+export default createApiClient

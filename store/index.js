@@ -1,5 +1,5 @@
 import feathersVuex, { initAuth } from 'feathers-vuex'
-import createApi from '../feathers-client'
+import createApiClient from '../helpers/createApiClient'
 import Vuex from 'vuex'
 
 import auth from './auth'
@@ -16,11 +16,11 @@ import usersettings from './usersettings'
 
 
 const createStore = (ssrContext) => {
-  const api = createApi(ssrContext || {});
+  const api = createApiClient(ssrContext || {});
   const { service, auth: feathersVuexAuthentication } = feathersVuex(api, { idField: '_id' })
 
   return new Vuex.Store({
-    modules: { auth, categories, comments, connections, env, layout, newsfeed, notifications, organizations, search, settings, usersettings },
+    modules: { auth, categories, comments, connections, layout, newsfeed, notifications, organizations, search, settings, usersettings },
     actions: {
       async nuxtServerInit ({dispatch, commit}, {req}) {
         dispatch('categories/init')
