@@ -14,10 +14,20 @@ import search from './search'
 import settings from './settings'
 import usersettings from './usersettings'
 
+const requireModule = require.context(
+  // The relative path holding the service modules
+  './services',
+  // Whether to look in subfolders
+  false,
+  // Only include .js files (prevents duplicate imports)
+  /.js$/
+)
+
 
 const createStore = (ssrContext) => {
-  const api = createApiClient(ssrContext || {});
-  const { service, auth: feathersVuexAuthentication } = feathersVuex(api, { idField: '_id' })
+  const feathersClient = createApiClient(ssrContext || {});
+  const { service, auth: feathersVuexAuthentication } = feathersVuex(feathersClient, { idField: '_id' })
+  const servicePlugins = requireModule.keys().map(modulePath => requireModule(modulePath).default(feathersClient))
 
   return new Vuex.Store({
     modules: { auth, categories, comments, connections, layout, newsfeed, notifications, organizations, search, settings, usersettings },
@@ -36,12 +46,7 @@ const createStore = (ssrContext) => {
       }
     },
     plugins: [
-      service('usersettings', {
-        namespace: 'feathers-vuex-usersettings'
-      }),
-      service('users', {
-        namespace: 'feathers-vuex-users'
-      }),
+      ...servicePlugins,
       feathersVuexAuthentication({
         userService: 'users',
         state: {
