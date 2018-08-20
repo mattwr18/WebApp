@@ -55,9 +55,14 @@
         "follow": {
             "buttonLabelFollow": "Folgen",
             "buttonLabelUnFollow": "Folgst",
-            "buttonLabelBlacklistAuthor": "Blockieren",
             "messageFollowSuccess": "Du folgst {name} nun",
             "messageUnFollowSuccess": "Du folgst {name} nicht mehr"
+        },
+        "blacklist": {
+          "buttonLabelBlock": "Blockieren",
+          "buttonLabelUnblock": "Blockiert",
+          "blockSuccess": "Du wirst keine Inhalte von {name} mehr sehen",
+          "unblockSuccess": "Du wirst wieder Inhalte von {name} sehen"
         },
         "admin": {
             "activate": "Aktivieren",

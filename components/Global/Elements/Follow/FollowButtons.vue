@@ -46,8 +46,11 @@
                    :disabled="blacklistPending || follow.isFollowing"
                    :isLoading="blacklistPending"
                    @click="toggleBlacklist">
-          <template>
-            <hc-icon icon="ban" class="icon-left" /> {{ $t('component.follow.buttonLabelBlacklistAuthor') }}
+          <template v-if="isBlacklisted">
+            <hc-icon icon="ban" :class="['icon-left', 'is-danger']" /> {{ $t('component.blacklist.buttonLabelUnblock') }}
+          </template>
+          <template v-else>
+            <hc-icon icon="ban" class="icon-left" /> {{ $t('component.blacklist.buttonLabelBlock') }}
           </template>
             </hc-button>
       </div>
@@ -104,7 +107,10 @@
         let message;
         try {
           await this.$store.dispatch('feathers-vuex-usersettings/toggleBlacklist', this.entity._id)
-          message = this.isBlacklisted ? 'You blacklisted this user' : 'You unblacklisted this user'
+          const translationKey = `component.blacklist.${this.isBlacklisted ? 'blockSuccess' : 'unblockSuccess'}`
+          message = this.$t(translationKey, {
+            name: this.entity.name || this.$t('component.contribution.creatorUnknown')
+          })
         }	catch(error) {
           message = String(error)
         }
