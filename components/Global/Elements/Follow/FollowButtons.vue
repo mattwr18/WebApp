@@ -88,21 +88,28 @@
         foreignId: this.entity._id,
         foreignService: this.service
       })
-      await this.$store.dispatch('feathers-vuex-usersettings/setCurrentByUserId', this.loggedInUser._id)
     },
     computed: {
       ...mapGetters({
         follow: 'connections/follow',
         loggedInUser: 'auth/user',
+        currentUserSettings: 'feathers-vuex-usersettings/current',
         blacklistPending: 'feathers-vuex-usersettings/isPending'
       }),
       isBlacklisted(){
-        return this.$store.getters['feathers-vuex-usersettings/isBlacklisted'](this.entity._id)
+        return this.currentUserSettings.blacklist.includes(this.entity._id)
       }
     },
     methods: {
-      toggleBlacklist(){
-        this.$store.dispatch('feathers-vuex-usersettings/toggleBlacklist', this.entity._id);
+      async toggleBlacklist(){
+        let message;
+        try {
+          await this.$store.dispatch('feathers-vuex-usersettings/toggleBlacklist', this.entity._id)
+          message = this.isBlacklisted ? 'You blacklisted this user' : 'You unblacklisted this user'
+        }	catch(error) {
+          message = String(error)
+        }
+        this.$snackbar.open({ message })
       },
       async toggleFollow () {
         if (this.follow._id) {

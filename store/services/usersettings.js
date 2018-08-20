@@ -9,31 +9,36 @@ let servicePlugin = (feathersClient) => {
       blacklist: [],
     },
     getters: {
-      isBlacklisted: (state) => (userId) => {
-        return state.copy && state.copy.blacklist.includes(userId)
-      },
       isPending: (state) => {
-        return (state.isFindPending || state.isPatchPending)
+        return (
+          state.isFindPending
+          || state.isGetPending
+          || state.isCreatePending
+          || state.isUpdatePending
+          || state.isPatchPending
+          || state.isRemovePending
+        )
       }
     },
     actions: {
-      async setCurrentByUserId({commit, dispatch}, userId){
+      async loadCurrent({commit, dispatch}, user){
+        let userId = user._id;
         let res = await dispatch('find', {
           query: { userId }
         })
         if (res.data.length > 0){
-          await commit('setCurrent', res.data[0])
+          commit('setCurrent', res.data[0])
         }
       },
-      toggleBlacklist({commit, state}, userId){
+      async toggleBlacklist({commit, state}, userId){
         let current = state.copy;
         if (current.blacklist.includes(userId)){
           current.blacklist = current.blacklist.filter(id => id !== userId);
         } else {
           current.blacklist.push(userId);
         }
-        current.save();
-        commit('setCurrent', current);
+        await commit('commitCopy');
+        return current.save();
       },
     }
   })
