@@ -60,9 +60,11 @@
 
 <script>
   import { mapGetters } from 'vuex'
+  import blacklistable from '~/components/mixins/blacklistable'
 
   export default {
     name: 'hc-follow-buttons',
+    mixins: [blacklistable],
     props: {
       showButtons: {
         type: Boolean,
@@ -94,27 +96,12 @@
     computed: {
       ...mapGetters({
         follow: 'connections/follow',
-        loggedInUser: 'auth/user',
-        currentUserSettings: 'feathers-vuex-usersettings/current',
-        blacklistPending: 'feathers-vuex-usersettings/isPending'
-      }),
-      isBlacklisted(){
-        return this.currentUserSettings.blacklist.includes(this.entity._id)
-      }
+        loggedInUser: 'auth/user'
+      })
     },
     methods: {
-      async toggleBlacklist(){
-        let message;
-        try {
-          await this.$store.dispatch('feathers-vuex-usersettings/toggleBlacklist', this.entity._id)
-          const translationKey = `component.blacklist.${this.isBlacklisted ? 'blockSuccess' : 'unblockSuccess'}`
-          message = this.$t(translationKey, {
-            name: this.entity.name || this.$t('component.contribution.creatorUnknown')
-          })
-        }	catch(error) {
-          message = String(error)
-        }
-        this.$snackbar.open({ message })
+      author(){
+        return this.entity;
       },
       async toggleFollow () {
         if (this.follow._id) {
