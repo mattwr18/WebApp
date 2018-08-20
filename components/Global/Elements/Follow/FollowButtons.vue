@@ -43,9 +43,9 @@
     <div class="columns is-mobile field has-text-centered">
       <div class="column control has-text-centered">
         <hc-button color="button"
-                   :class="{'is-primary': !blacklistStatus.isPending}"
-                   :disabled="blacklistStatus.isPending"
-                   :isLoading="blacklistStatus.isPending"
+                   :class="{'is-primary': (!blacklistPending && !isBlacklisted)}"
+                   :disabled="blacklistPending"
+                   :isLoading="blacklistPending"
                    @click="toggleBlacklist">
           <template>
             <hc-icon icon="ban" class="icon-left" /> {{ $t('component.follow.buttonLabelBlacklistAuthor') }}
@@ -81,25 +81,29 @@
         followingCount: 0
       }
     },
-    mounted () {
+    async mounted () {
       this.followingCount = this.entity.followersCounts ? (this.entity.followersCounts.users || 0) : 0
       this.$store.dispatch('connections/syncFollow', {
         userId: this.loggedInUser._id,
         foreignId: this.entity._id,
         foreignService: this.service
       })
-      this.$store.dispatch('blacklist/syncBlacklist', {
-        userId: this.loggedInUser._id
-      })
+      await this.$store.dispatch('feathers-vuex-usersettings/setCurrentByUserId', this.loggedInUser._id)
     },
     computed: {
       ...mapGetters({
         follow: 'connections/follow',
-        blacklistStatus: 'blacklist/status',
-        loggedInUser: 'auth/user'
-      })
+        loggedInUser: 'auth/user',
+        blacklistPending: 'feathers-vuex-usersettings/isPending'
+      }),
+      isBlacklisted(){
+        return this.$store.getters['feathers-vuex-usersettings/isBlacklisted'](this.entity._id)
+      }
     },
     methods: {
+      toggleBlacklist(){
+        this.$store.dispatch('feathers-vuex-usersettings/toggleBlacklist', this.entity._id);
+      },
       async toggleFollow () {
         if (this.follow._id) {
           await this.$store.dispatch('connections/unfollow', {
@@ -129,15 +133,6 @@
         this.$snackbar.open({
           message: 'Connected!'
         })
-      },
-      async toggleBlacklist() {
-        if (this.blacklistStatus.blacklist.includes(this.entity._id)) {
-          await this.$store.dispatch('blacklist/unblacklist', this.entity._id);
-          this.$snackbar.open({ message: 'You unblacklisted this account' });
-        } else {
-          await this.$store.dispatch('blacklist/blacklist', this.entity._id);
-          this.$snackbar.open({ message: 'You blacklisted this account'});
-        }
       }
     }
   }
