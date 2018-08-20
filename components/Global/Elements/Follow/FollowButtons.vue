@@ -19,7 +19,7 @@
         <hc-button color="button is-fullwidth"
                    :class="{'is-primary': !follow.isPending && !follow.isFollowing}"
                    @click="toggleFollow"
-                   :disabled="follow.isPending"
+                   :disabled="follow.isPending || isBlacklisted"
                    :isLoading="follow.isPending">
           <template v-if="follow.isFollowing">
             <hc-icon icon="check" class="icon-left" /> {{ $t('component.follow.buttonLabelUnFollow') }}
@@ -43,8 +43,7 @@
     <div class="columns is-mobile field has-text-centered">
       <div class="column control has-text-centered">
         <hc-button color="button"
-                   :class="{'is-primary': (!blacklistPending && !isBlacklisted)}"
-                   :disabled="blacklistPending"
+                   :disabled="blacklistPending || follow.isFollowing"
                    :isLoading="blacklistPending"
                    @click="toggleBlacklist">
           <template>
