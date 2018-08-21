@@ -624,7 +624,8 @@
             "organizationStreet": "Straße",
             "organizationZipCode": "PLZ",
             "organizationCity": "Stadt",
-            "organizationCountry": "Land"
+            "organizationCountry": "Land",
+            "blacklist": "Sperrliste"
         }
     },
     "ressource": {
