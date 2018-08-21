@@ -627,7 +627,8 @@
             "organizationZipCode": "Zip Code",
             "organizationCity": "City",
             "organizationCountry": "Country",
-            "blacklist": "Blacklist"
+            "blacklist": "Blacklist",
+            "blacklistSubtitle": "Users whose content you don't see anymore"
         }
     },
     "ressource": {

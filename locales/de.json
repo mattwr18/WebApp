@@ -625,7 +625,8 @@
             "organizationZipCode": "PLZ",
             "organizationCity": "Stadt",
             "organizationCountry": "Land",
-            "blacklist": "Sperrliste"
+            "blacklist": "Sperrliste",
+            "blacklistSubtitle": "Nutzerprofile deren Inhalte Du nicht mehr siehst"
         }
     },
     "ressource": {
