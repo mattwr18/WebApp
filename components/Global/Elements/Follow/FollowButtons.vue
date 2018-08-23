@@ -40,7 +40,7 @@
         </hc-button>
       </div>
     </div>
-    <div class="columns is-mobile field has-text-centered">
+    <div v-if="service === 'users'" class="columns is-mobile field has-text-centered">
       <div class="column control has-text-centered">
         <hc-button color="button"
                    :disabled="blacklistPending || follow.isFollowing"
