@@ -20,10 +20,11 @@ export default {
           name: this.author().name || this.$t('component.contribution.creatorUnknown')
         })
       } catch (error) {
-        console.log(error)
-        message = String(error)
+        message = this.$t('component.error.general')
+        throw (error)
+      } finally {
+        this.$snackbar.open({ message })
       }
-      this.$snackbar.open({ message })
     }
   }
 }

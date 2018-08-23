@@ -5,6 +5,9 @@ let servicePlugin = (feathersClient) => {
   const servicePath = 'usersettings'
   const servicePlugin = service(servicePath, {
     namespace: 'feathers-vuex-usersettings',
+    instanceDefaults: {
+      blacklist: []
+    },
     getters: {
       isPending: (state) => {
         return (
@@ -30,12 +33,14 @@ let servicePlugin = (feathersClient) => {
       },
       async toggleBlacklist ({commit, dispatch, state}, author) {
         let current = state.copy
+        let blacklist = current.blacklist
         let userId = author._id
-        if (current.blacklist.includes(userId)) {
-          current.blacklist = current.blacklist.filter(id => id !== userId)
+        if (blacklist.includes(userId)) {
+          blacklist = blacklist.filter(id => id !== userId)
         } else {
-          current.blacklist.push(userId)
+          blacklist.push(userId)
         }
+        current.blacklist = blacklist
         await commit('commitCopy')
         return dispatch('patch', [current._id, current, {}])
       }
