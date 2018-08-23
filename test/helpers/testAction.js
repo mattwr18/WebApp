@@ -26,4 +26,4 @@ const testAction = async (action, payload, state, expectedMutations, testrunner)
     testrunner.deepEqual(count, 0)
   }
 }
-module.exports = { testAction };
+module.exports = { testAction }

@@ -23,10 +23,9 @@ const requireModule = require.context(
   /.js$/
 )
 
-
 const createStore = (ssrContext) => {
-  const feathersClient = createApiClient(ssrContext || {});
-  const { service, auth: feathersVuexAuthentication } = feathersVuex(feathersClient, { idField: '_id' })
+  const feathersClient = createApiClient(ssrContext || {})
+  const { auth: feathersVuexAuthentication } = feathersVuex(feathersClient, { idField: '_id' })
   const servicePlugins = requireModule.keys().map(modulePath => requireModule(modulePath).default(feathersClient))
 
   return new Vuex.Store({
@@ -58,7 +57,7 @@ const createStore = (ssrContext) => {
             'auth-reset-token',
             'pages-slug',
             'test'
-          ],
+          ]
         }
       })
     ]

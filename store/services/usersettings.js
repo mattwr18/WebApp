@@ -8,37 +8,37 @@ let servicePlugin = (feathersClient) => {
     getters: {
       isPending: (state) => {
         return (
-          state.current
-          || state.isFindPending
-          || state.isGetPending
-          || state.isCreatePending
-          || state.isUpdatePending
-          || state.isPatchPending
-          || state.isRemovePending
+          state.current ||
+          state.isFindPending ||
+          state.isGetPending ||
+          state.isCreatePending ||
+          state.isUpdatePending ||
+          state.isPatchPending ||
+          state.isRemovePending
         )
       }
     },
     actions: {
-      async loadCurrent({commit, dispatch}, user){
-        let userId = user._id;
+      async loadCurrent ({commit, dispatch}, user) {
+        let userId = user._id
         let res = await dispatch('find', {
           query: { userId }
         })
-        if (res.data.length > 0){
+        if (res.data.length > 0) {
           commit('setCurrent', res.data[0])
         }
       },
-      async toggleBlacklist({commit, dispatch, state}, author){
-        let current = state.copy;
-        let userId = author._id;
-        if (current.blacklist.includes(userId)){
-          current.blacklist = current.blacklist.filter(id => id !== userId);
+      async toggleBlacklist ({commit, dispatch, state}, author) {
+        let current = state.copy
+        let userId = author._id
+        if (current.blacklist.includes(userId)) {
+          current.blacklist = current.blacklist.filter(id => id !== userId)
         } else {
-          current.blacklist.push(userId);
+          current.blacklist.push(userId)
         }
-        await commit('commitCopy');
-        return dispatch('patch', [current._id, current, {}]);
-      },
+        await commit('commitCopy')
+        return dispatch('patch', [current._id, current, {}])
+      }
     }
   })
   return servicePlugin

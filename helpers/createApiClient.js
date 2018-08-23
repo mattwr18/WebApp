@@ -3,8 +3,7 @@ import socketio from '@feathersjs/socketio-client'
 import io from 'socket.io-client'
 import authentication from '@feathersjs/authentication-client'
 import urlHelper from '~/helpers/urls'
-import Cookie from 'cookie-universal';
-
+import Cookie from 'cookie-universal'
 
 const authKey = 'feathers-jwt'
 const endpoint = urlHelper.buildEndpointURL(process.env.API_HOST, { port: process.env.API_PORT })
@@ -25,10 +24,8 @@ if (process.env.ENV === 'production') {
   socket = socketio(io(endpoint))
 }
 
-
-
 let createApiClient = ({req, res}) => {
-  const cookies = Cookie(req, res);
+  const cookies = Cookie(req, res)
   const storageMapping = {
     getItem: (key) => {
       const res = cookies.get(key)
@@ -62,7 +59,7 @@ let createApiClient = ({req, res}) => {
       cookie: authKey
     }))
 
-  return api;
+  return api
 }
 
 export default createApiClient
