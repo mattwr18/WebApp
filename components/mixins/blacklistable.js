@@ -6,7 +6,8 @@ export default {
       blacklistPending: 'feathers-vuex-usersettings/isPending'
     }),
     isBlacklisted () {
-      return this.currentUserSettings.blacklist.includes(this.author()._id)
+      let { blacklist } = this.currentUserSettings
+      return blacklist && blacklist.includes(this.author()._id)
     }
   },
   methods: {

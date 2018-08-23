@@ -24,8 +24,9 @@ import Author from '~/components/Author/Author.vue'
       }
     },
     async asyncData ({store}) {
-      const currentUserSettings = store.getters['feathers-vuex-usersettings/current'];
-      const res = await store.dispatch('feathers-vuex-users/find', { query: {_id: { $in: currentUserSettings.blacklist } } } );
+      const { blacklist } = store.getters['feathers-vuex-usersettings/current'];
+      if (!blacklist) return {}
+      const res = await store.dispatch('feathers-vuex-users/find', { query: {_id: { $in: blacklist } } } );
       return {
         blacklistedUsers: res.data
       }
