@@ -4,18 +4,20 @@
       {{ $t('auth.settings.blacklist') }}
     </h2>
     <p class="subtitle is-6">{{ $t('auth.settings.blacklistSubtitle') }}</p>
-        <nuxt-link
-            v-for="(user, index) in blacklistedUsers"
-            :key="user._id"
-            :to="{ name: 'profile-slug', params: { slug: user.slug }}"
-            class="column user">
-            {{ user.name }}
-        </nuxt-link>
+    <author
+       v-for="(user, index) in blacklistedUsers"
+       :key="user._id"
+       :user="user"
+       />
   </div>
 </template>
 
 <script>
+import Author from '~/components/Author/Author.vue'
   export default {
+    components: {
+      Author
+    },
     data() {
       return {
         blacklistedUsers: [],

@@ -628,7 +628,7 @@
             "organizationCity": "City",
             "organizationCountry": "Country",
             "blacklist": "Blacklist",
-            "blacklistSubtitle": "Users whose content you don't see anymore"
+            "blacklistSubtitle": "Users whose content you no longer see"
         }
     },
     "ressource": {
