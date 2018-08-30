@@ -19,7 +19,7 @@
         <hc-button color="button is-fullwidth"
                    :class="{'is-primary': !follow.isPending && !follow.isFollowing}"
                    @click="toggleFollow"
-                   :disabled="follow.isPending || isBlacklisted"
+                   :disabled="follow.isPending"
                    :isLoading="follow.isPending">
           <template v-if="follow.isFollowing">
             <hc-icon icon="check" class="icon-left" /> {{ $t('component.follow.buttonLabelUnFollow') }}
@@ -40,31 +40,14 @@
         </hc-button>
       </div>
     </div>
-    <div v-if="service === 'users'" class="columns is-mobile field has-text-centered">
-      <div class="column control has-text-centered">
-        <hc-button color="button"
-                   :disabled="blacklistPending || follow.isFollowing"
-                   :isLoading="blacklistPending"
-                   @click="toggleBlacklist">
-          <template v-if="isBlacklisted">
-            <hc-icon icon="ban" :class="['icon-left', 'is-danger']" /> {{ $t('component.blacklist.buttonLabelUnblock') }}
-          </template>
-          <template v-else>
-            <hc-icon icon="ban" class="icon-left" /> {{ $t('component.blacklist.buttonLabelBlock') }}
-          </template>
-            </hc-button>
-      </div>
-    </div>
   </div>
 </template>
 
 <script>
   import { mapGetters } from 'vuex'
-  import blacklistable from '~/components/mixins/blacklistable'
 
   export default {
     name: 'hc-follow-buttons',
-    mixins: [blacklistable],
     props: {
       showButtons: {
         type: Boolean,
